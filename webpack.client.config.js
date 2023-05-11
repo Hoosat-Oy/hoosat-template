@@ -1,26 +1,28 @@
-import { resolve as _resolve } from "path";
+const path = require("path");
 
-export const mode = "development";
-export const target = "web";
-export const entry = "./src/client/index.tsx";
-export const output = {
-  filename: "client.js",
-  path: _resolve(__dirname, "dist/public"),
-};
-export const module = {
-  rules: [
-    {
-      test: /\.css$/i,
-      use: ["style-loader", "css-loader"],
-    },
-    {
-      test: /\.(ts|tsx)$/,
-      exclude: /node_modules/,
-      use: "ts-loader",
-    },
-  ],
-};
-export const resolve = {
-  extensions: [".tsx", ".ts", ".js"],
+module.exports = {
+  mode: "development",
+  target: "web",
+  entry: "./src/client/index.tsx",
+  output: {
+    filename: "bundle.js",
+    path: path.resolve(__dirname, "public"),
+  },
+  module: {
+    rules: [
+      {
+        test: /\.(ts|tsx)$/,
+        exclude: /node_modules/,
+        use: "ts-loader",
+      },
+      {
+        test: /\.css$/i,
+        use: ["style-loader", "css-loader"],
+      },
+    ],
+  },
+  resolve: {
+    extensions: [".tsx", ".ts", ".js"],
+  },
 };
 

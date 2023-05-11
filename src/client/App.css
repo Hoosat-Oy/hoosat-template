@@ -1,3 +1,6 @@
-h1 {
-  font-size: 5rem;
+@import './theme.css';
+
+.large {
+  font-size: xx-large;
+  color: var(--color-gray);
 }
