@@ -1,34 +1,37 @@
-import express from 'express';
-import path from 'path';
+import express from "express";
 import React from 'react';
-import { renderToString } from 'react-dom/server';
-import { Helmet } from 'react-helmet';
+import ReactDOMServer from 'react-dom/server';
+import { MemoryRouter } from 'react-router-dom';
 import App from '../client/App';
 
+const PORT = process.env.PORT || 3000;
 const app = express();
 
-app.use(express.static(path.join(__dirname, '../../dist')));
+app.use(express.static('public'));
 
-app.get('/', (req, res) => {
-  const message = 'Hello from server!';
-  const html = renderToString(React.createElement(App));
-  const helmet = Helmet.renderStatic();
+app.get('*', (req, res) => {
+  const location = req.url;
+  const html = ReactDOMServer.renderToString(
+    React.createElement(MemoryRouter, { initialEntries: [location] }, 
+      React.createElement(App)  
+    )
+  );
 
   res.send(`
     <!DOCTYPE html>
     <html>
       <head>
-        ${helmet.title.toString()}
-        ${helmet.meta.toString()}
+        <meta charset="utf-8">
+        <title>React SSR with Typescript</title>
       </head>
       <body>
         <div id="root">${html}</div>
-        <script src="/server.js"></script>
+        <script src="/bundle.js"></script>
       </body>
     </html>
   `);
 });
 
-app.listen(3000, () => {
-  console.log('Server started on http://localhost:3000');
+app.listen(PORT, () => {
+  console.log(`Server is listening on port ${PORT}`);
 });
