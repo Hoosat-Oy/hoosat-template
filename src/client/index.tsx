@@ -2,6 +2,7 @@ import React from 'react';
 import { hydrateRoot } from 'react-dom/client'
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
+import { HeadProvider } from 'react-head';
 
 const domNode = document.getElementById('root');
 if (domNode === null) {
@@ -10,9 +11,11 @@ if (domNode === null) {
   const root = hydrateRoot(
     domNode, 
     <React.StrictMode>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
+      <HeadProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </HeadProvider>
     </React.StrictMode>
   );
 }
