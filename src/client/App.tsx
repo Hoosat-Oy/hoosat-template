@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { Router } from 'react-router-dom';
 import { Helmet, HelmetData } from 'react-helmet';
 
 import './App.css';
-import { About } from './About';
+import { About } from './routes/About';
+import { Home } from './routes/Home';
+import { Route, Routes, useLocation } from 'react-router';
 
 export default function App() {
+  const location = useLocation();
   const helmet = Helmet.renderStatic();
 
   return (
@@ -23,7 +25,10 @@ export default function App() {
           </Helmet>
       </head>
       <body>
-        <About />
+        <Routes>
+          <Route path="/" element={<Home />}/>
+          <Route path="/about" element={<About />} />
+        </Routes>
       </body>
     </html>
   );
