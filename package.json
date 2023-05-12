@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "dev": "npm run build:client && npm run build:server && node dist/server.js",
+    "dev": "npm run dev:client && npm run dev:server && node dist/server.js",
     "dev:client": "webpack --config webpack.client.config.js --mode=development",
     "dev:server": "webpack --config webpack.server.config.js --mode=development",
     "build": "npm run build:client && npm run build:server",
@@ -17,8 +17,8 @@
   "license": "ISC",
   "dependencies": {
     "@types/express": "^4.17.13",
-    "@types/react": "^17.0.37",
-    "@types/react-dom": "^17.0.11",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
     "express": "^4.17.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
@@ -26,6 +26,7 @@
   "devDependencies": {
     "@types/jest": "^29.5.1",
     "@types/node": "^16.11.10",
+    "@types/react-helmet": "^6.1.6",
     "@types/webpack": "^5.28.1",
     "css-loader": "^6.7.3",
     "jest": "^29.5.0",

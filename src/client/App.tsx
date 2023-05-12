@@ -1,16 +1,24 @@
-import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Router } from 'react-router-dom';
+import { Helmet, HelmetData } from 'react-helmet';
 
 import './App.css';
+import { About } from './About';
 
-const Home = () => <h1 className='large'>Home</h1>;
-const About = () => <h1>About</h1>;
 
-const App = () => (
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/about" element={<About />} />
-    </Routes>
-);
 
-export default App;
+export default function App() {
+  return (
+    <html>
+      <head>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="stylesheet" href="/styles.css"></link>
+        <title>My app</title>
+      </head>
+      <body>
+        LOL
+      </body>
+    </html>
+  );
+}
