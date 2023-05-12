@@ -1,16 +1,22 @@
-const path = require("path");
-const webpackNodeExternals = require("webpack-node-externals");
+// webpack.server.config.js
 
-module.exports = {
+import { resolve as _resolve } from "path";
+
+export default {
   devtool: "source-map",
   mode: "development",
   target: "node",
   entry: "./src/server/index.tsx",
   output: {
     filename: "server.js",
-    path: path.resolve(__dirname, "dist"),
+    path: _resolve(new URL(".", import.meta.url).pathname, "dist"),
+    library: { type: "module" },
+    libraryTarget: "module",
+    chunkFormat: "module",
   },
-  externals: [webpackNodeExternals()],
+  experiments: {
+    outputModule: true,
+  },
   module: {
     rules: [
       {
@@ -28,4 +34,3 @@ module.exports = {
     extensions: [".tsx", ".ts", ".js", ".jsx"],
   },
 };
-

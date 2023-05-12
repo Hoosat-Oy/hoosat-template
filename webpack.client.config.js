@@ -1,13 +1,21 @@
-const path = require("path");
+// webpack.client.config.js
 
-module.exports = {
+import { resolve as _resolve } from "path";
+
+export default {
   devtool: "source-map",
   mode: "development",
   target: "web",
   entry: "./src/client/index.tsx",
   output: {
     filename: "bundle.js",
-    path: path.resolve(__dirname, "public"),
+    path: _resolve(new URL(".", import.meta.url).pathname, "public"),
+    module: true,
+    chunkFormat: "module",
+    libraryTarget: "module",
+  },
+  experiments: {
+    outputModule: true,
   },
   module: {
     rules: [
@@ -26,4 +34,3 @@ module.exports = {
     extensions: [".tsx", ".ts", ".js", ".jsx"],
   },
 };
-

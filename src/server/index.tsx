@@ -9,8 +9,7 @@ import { HeadProvider } from 'react-head';
 const PORT = process.env.PORT || 3000;
 const app = express();
 
-const publicPath = path.join(__dirname, '..', 'public');
-app.use(express.static(publicPath));
+app.use(express.static("./public"));
 
 app.get('*', (req: Request, res: Response) => {
   const headTags = [];
