@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 
 export const About = () => {
@@ -7,7 +7,7 @@ export const About = () => {
   return (
     <>
       <h1>About</h1>
-      <button onClick={() => { navigate('/'); }}>Navigate to home</button>
+      <Link to="/">Home</Link>
     </>
   )
 };

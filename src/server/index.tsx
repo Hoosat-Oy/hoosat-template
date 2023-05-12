@@ -4,7 +4,6 @@ import React from 'react';
 import { renderToPipeableStream } from 'react-dom/server';
 import App from '../client/App';
 import { StaticRouter } from 'react-router-dom/server';
-import { Helmet } from "react-helmet";
 
 const PORT = process.env.PORT || 3000;
 const app = express();
@@ -13,25 +12,22 @@ const publicPath = path.join(__dirname, '..', 'public');
 app.use(express.static(publicPath));
 
 app.get('*', (req: Request, res: Response) => {
-  const helmet = Helmet.renderStatic();
+  const helmetContext = {};
   const { pipe } = renderToPipeableStream(
-      <html { ...helmet.htmlAttributes.toComponent() }>
-        <head>
-          { helmet.title.toComponent() }
-          { helmet.meta.toComponent() }
-          { helmet.link.toComponent() }
-        </head>
-        <body { ...helmet.bodyAttributes.toComponent() }>
-          <div id="root">
-            <React.StrictMode>
+    <React.StrictMode>
+        <html>
+          <head>
+          </head>
+          <body>
+            <div id="root">
               <StaticRouter location={req.url}>
                 <App />
               </StaticRouter>
-            </React.StrictMode>
-          </div>
-          <script src="bundle.js"></script>
-        </body>
-      </html>
+            </div>
+            <script src="bundle.js"></script>
+          </body>
+        </html>
+    </React.StrictMode>
   );
   res.setHeader('content-type', 'text/html');
   pipe(res);
