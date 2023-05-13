@@ -3,6 +3,7 @@
 This is a template for building a full-stack server side rendered web application using React, Express, and TypeScript. It includes support for ES modules using Webpack and Babel, and unit testing with Jest.
 
 ## Technologies Used
+
 - React 18.2
 - Express 4.18
 - TypeScript 4.9.2
@@ -11,6 +12,7 @@ This is a template for building a full-stack server side rendered web applicatio
 - Jest 27
 
 ## Features
+
 - Full-stack TypeScript application using React and Express.
 - Supports ES modules for server-side and client-side code.
 - Configured with Webpack and Babel for production builds.
@@ -52,6 +54,8 @@ npm run dev
 - `public`: Contains the bundle.js client code and public files for the project.
 - `dist`: Contains production build output of server.
 
-
 ## License
 This template is licensed under the MIT License. Feel free to use it for your own projects or as a starting point for your own templates.
+
+## Join us
+[https://discord.gg/UXPFcPaPBg](Discord)
