@@ -2,6 +2,7 @@
 
 // Import the "resolve" method from the "path" module
 import { resolve as _resolve } from "path";
+//import nodeExternals from "webpack-node-externals";
 
 // Export the configuration object
 export default {
@@ -49,16 +50,7 @@ export default {
       {
         test: /.(ts|tsx)$/,
         exclude: /node_modules/,
-        use: ["ts-loader", {
-          loader: "babel-loader",
-          options: {
-            presets: [
-              '@babel/preset-env',
-              '@babel/preset-react',
-              '@babel/preset-typescript',
-            ]
-          },
-        }],
+        use: ["ts-loader"],
       },
       // Use the "style-loader" and "css-loader" to load CSS files
       {
@@ -71,4 +63,5 @@ export default {
   resolve: {
     extensions: [".tsx", ".ts", ".js", ".jsx"],
   },
+  //externals: [nodeExternals()],
 };

@@ -9,6 +9,7 @@ import { renderToPipeableStream } from 'react-dom/server';
 import App from '../client/App';
 import { StaticRouter } from 'react-router-dom/server';
 import { HeadProvider } from 'react-head';
+import { APIRoutes } from './api-routes';
 
 // Defining the port number
 let PORT = process.env.PORT || 8080;
@@ -22,22 +23,24 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Enable CORS handling. 
-app.use(cors({ origin : async (origin: any, callback: (arg0: Error | null, arg1: boolean) => any) => {
-  let origins: string[] = process.env.ORIGINS?.split(", ") || [`http://localhost:${PORT}`];
-  if(!origin) return callback(null, true);
-  if(origins.indexOf(origin) === -1) {
-    let msg = `This site ${origin} does not have an access. Only specific domains are allowed to access it.`;
-    return callback(new Error(msg), false);
+app.use(cors({
+  origin: (origin, callback) => {
+    const whitelist = process.env.ORIGINS?.split(", ") || [`http://localhost:${PORT.toString()}`];
+    if(!origin || whitelist.indexOf(origin) !== -1) {
+      return callback(null, true);
+    } else {
+      return callback(new Error("You can access only from specific domains."), false);
+    }
   }
-  return callback(null, true);
-}, credentials: true }));
+}));
 
-// Find API routes.
-// import { APIRoutes } from './api-routes';
-// APIRoutes(app);
+
+// use API routes.
+APIRoutes(app);
 
 // Serving static files from public folder
 app.use(express.static("./public"));
+
 
 // Define express app route for /api that calls a function giving it the router.
 
@@ -91,12 +94,12 @@ if(process.env.PROTOCOL === "HTTPS") {
     };
     const httpsServer = https.createServer(httpsOptions, app);
     httpsServer.listen(PORT, () => {
-      console.log(`Server listening on port ${PORT} using https.\r\n`);
+      console.log(`Server listening on port ${PORT.toString()} using https.\r\n`);
     });
   }
 } else {
   const httpServer = http.createServer(app);
   httpServer.listen(PORT, () => {
-    console.log(`Server listening on port ${PORT} using http.\r\n`);
+    console.log(`Server listening on port ${PORT.toString()} using http.\r\n`);
   });
 }

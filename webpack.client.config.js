@@ -49,16 +49,7 @@ export default {
       {
         test: /.(ts|tsx)$/,
         exclude: /node_modules/,
-        use: ["ts-loader", {
-          loader: "babel-loader",
-          options: {
-            presets: [
-              '@babel/preset-env',
-              '@babel/preset-react',
-              '@babel/preset-typescript',
-            ]
-          },
-        }],
+        use: ["ts-loader"],
       },
       // Use the "style-loader" and "css-loader" to load CSS files
       {
