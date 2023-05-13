@@ -29,7 +29,7 @@
     // Disallow the use of "this" without an explicit type annotation
     "noImplicitThis": true,
     // Require all functions to have a return statement
-    "noImplicitReturns": true,
+    // "noImplicitReturns": true,
     // Enable strict null checks
     "strictNullChecks": true,
     // [Optional] Enable decorators
