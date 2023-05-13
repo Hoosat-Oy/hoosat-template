@@ -50,11 +50,11 @@ app.get('*', (req: Request, res: Response) => {
 });
 
 // Defining a fallback route for 404 Not Found responses
-app.use((res: Response) => {
-  res.status(404).send('Not Found');
+app.use((req: Request, res: Response) => {
+  res.status(404).send(`Not found ${req.url}`);
 });
 
 // Starting the server on the defined port number
 app.listen(PORT, () => {
-  console.log(`Server is listening on port ${ PORT }`);
+  console.log(`Server is listening on port ${ PORT.toString() }`);
 });
