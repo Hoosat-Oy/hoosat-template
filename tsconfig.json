@@ -1,19 +1,52 @@
 {
+  // Specify the compiler options
   "compilerOptions": {
+    // Set the output directory to "dist"
     "outDir": "./dist",
+    // Set the module system to "esnext"
     "module": "esnext",
+    // Set the ECMAScript target version to "ES2020"
     "target": "ES2020",
+    // Enable JSX support for React components
     "jsx": "react",
-    "lib": ["es6", "ES2020", "dom"],
+    // Specify the library files to include
+    "lib": [
+      "ES2020",
+      "dom"
+    ],
+    // Enable source maps for easier debugging
     "sourceMap": true,
+    // Allow importing modules with default exports
     "allowSyntheticDefaultImports": true,
+    // Specify the module resolution strategy to use
     "moduleResolution": "node",
+    // Enable importing JSON files as modules
     "resolveJsonModule": true,
+    // Generate declaration files
     "declaration": true,
+    // Disallow implicit "any" types
     "noImplicitAny": false,
+    // Disallow the use of "this" without an explicit type annotation
     "noImplicitThis": true,
+    // Require all functions to have a return statement
     "noImplicitReturns": true,
-    "strictNullChecks": true
+    // Enable strict null checks
+    "strictNullChecks": true,
+    // [Optional] Enable decorators
+    "experimentalDecorators": true,
+    // [Optional] Enable emitting declaration map files
+    // "declarationMap": true,
+    // [Optional] Enable strict property initialization checks
+    "strictPropertyInitialization": true,
+    // [Optional] Enable strict function types
+    "strictFunctionTypes": true,
+    // [Optional] Enable no unused variables check
+    "noUnusedLocals": true,
+    // [Optional] Enable no unused parameters check
+    "noUnusedParameters": true,
   },
-  "include": ["src/**/*"]
+  // Specify the files and directories to include in compilation
+  "include": [
+    "src/**/*"
+  ]
 }

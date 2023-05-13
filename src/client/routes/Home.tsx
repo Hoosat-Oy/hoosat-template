@@ -1,17 +1,20 @@
 import React from 'react';
 import { Title } from 'react-head';
-import { Helmet } from 'react-helmet';
-import { useNavigate } from 'react-router-dom';
-
+import { Link } from 'react-router-dom';
 
 export const Home = () => {
-  const navigate = useNavigate();
+  const pageTitle = 'Home of Hoosat SSR template';
+
   return (
-    <>
-      <Title>Home of Hoosat SSR template</Title>
-      <h1>Home</h1>
-      <p>This is Hoosat project template for building React + Express Typescript web applications.</p>
-      <button onClick={() => { navigate('/about'); }}>Navigate to about</button>
-    </>
-  )
+    <main>
+      <Title>{pageTitle}</Title>
+      <section>
+        <h1>{pageTitle}</h1>
+        <p>
+          This is the Hoosat project template for building React + Express TypeScript web applications.
+        </p>
+        <Link to="/about">Navigate to About page</Link>
+      </section>
+    </main>
+  );
 };
