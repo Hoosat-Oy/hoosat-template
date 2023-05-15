@@ -8,8 +8,11 @@ import cors  from "cors";
 import { renderToPipeableStream } from 'react-dom/server';
 import App from '../client/App';
 import { StaticRouter } from 'react-router-dom/server';
-import { HeadProvider } from 'react-head';
 import { APIRoutes } from './api-routes';
+import { ErrorHandler } from './core/express-errors';
+import { HelmetProvider } from 'react-helmet-async';
+import { Transform } from 'stream';
+import { HelmetContext } from '../@types/helmet';
 
 // Defining the port number
 let PORT = process.env.PORT || 8080;
@@ -41,41 +44,72 @@ APIRoutes(app);
 // Serving static files from public folder
 app.use(express.static("./public"));
 
-
-// Define express app route for /api that calls a function giving it the router.
+const replaceHeadTags = (headTags: { title?: any; style?: any; meta?: any; link?: string; script?: any; base?: any; }) => {
+  let replaced = false;
+  return new Transform({
+    transform(chunk, _encoding, callback) {
+      if (!replaced) {
+        let chunkStr = chunk.toString();
+        const headOpenTagMatch = chunkStr.match(/<head[^>]*>/i);
+        const headCloseTagMatch = chunkStr.match(/<\/head>/i);
+        if (headOpenTagMatch && headCloseTagMatch) {
+          const headContent = chunkStr.substring(headOpenTagMatch.index + headOpenTagMatch[0].length, headCloseTagMatch.index);
+          const newHeadContent = headContent + headTags.title + headTags.style + headTags.meta + headTags.script + headTags.base;
+          chunkStr = chunkStr.substring(0, headOpenTagMatch.index + headOpenTagMatch[0].length) + newHeadContent + chunkStr.substring(headCloseTagMatch.index);
+          chunk = Buffer.from(chunkStr);
+          replaced = true;
+        }
+      }
+      callback(null, chunk);
+    }
+  });
+};
 
 // Defining the route for all requests
-app.get('*', (req: Request, res: Response) => {
-  // Defining an array to store the head tags
-  const headTags = [];
-
+app.get('*', async (req: Request, res: Response) => {
+  const helmetContext: HelmetContext = {};
   // Rendering the App component to a pipeable stream
   const { pipe } = renderToPipeableStream(
     <React.StrictMode>
-      <html>
-        <head>
-          {/* Adding head tags to the array */}
-          {headTags}
-        </head>
-        <body>
-          {/* Mounting the App component inside the StaticRouter */}
-          <div id="root">
-            <HeadProvider headTags={headTags}>
+      <HelmetProvider context={helmetContext}>
+        <html>
+          <head>
+          </head>
+          <body>
+            {/* Mounting the App component inside the StaticRouter */}
+            <div id="root">
               <StaticRouter location={req.url}>
                 <App />
               </StaticRouter>
-            </HeadProvider>
-          </div>
-          {/* Including the client-side JS bundle */}
-          <script src="bundle.js"></script>
-        </body>
-      </html>
-    </React.StrictMode>
-  );
-
-  // Setting the content-type of the response to HTML and piping the rendered HTML to the response
-  res.setHeader('content-type', 'text/html');
-  pipe(res);
+            </div>
+          </body>
+        </html>
+      </HelmetProvider>
+    </React.StrictMode>,
+  {
+    bootstrapScripts: ['/bundle.js'],
+    onShellReady: async () => {
+      const replaceStream = replaceHeadTags({
+        title: helmetContext.helmet?.title?.toString() || '',
+        style: helmetContext.helmet?.script?.toString() || '',
+        meta: helmetContext.helmet?.meta?.toString() || '',
+        link: helmetContext.helmet?.link?.toString() || '',
+        script: helmetContext.helmet?.script?.toString() || '',
+        base: helmetContext.helmet?.script?.toString() || '',
+      });
+      pipe(replaceStream).pipe(res);
+    },
+    onShellError(error) {
+      res.statusCode = 500;
+      res.setHeader('content-type', 'text/html');
+      res.send('<h1>Something went wrong</h1>');
+      ErrorHandler(req, res, error);
+    },
+    onError(error) {
+      console.error(error);
+      ErrorHandler(req, res, error);
+    }
+  });
 });
 
 // Defining a fallback route for 404 Not Found responses
@@ -103,3 +137,4 @@ if(process.env.PROTOCOL === "HTTPS") {
     console.log(`Server listening on port ${PORT.toString()} using http.\r\n`);
   });
 }
+

@@ -2,7 +2,7 @@ import React from 'react';
 import { hydrateRoot } from 'react-dom/client'
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
-import { HeadProvider } from 'react-head';
+import { HelmetProvider } from 'react-helmet-async';
 
 // Get the root DOM node to hydrate the app into
 const domNode = document.getElementById('root');
@@ -16,12 +16,12 @@ if (domNode === null) {
     domNode, 
     // Wrap the App component in a StrictMode component for extra runtime checks
     <React.StrictMode>
-      <HeadProvider>
+      <HelmetProvider>
         {/* Use a BrowserRouter to enable client-side routing */}
         <BrowserRouter>
           <App />
         </BrowserRouter>
-      </HeadProvider>
+      </HelmetProvider>
     </React.StrictMode>
   );
 }
