@@ -4,6 +4,7 @@ This is a template for building a full-stack server side rendered web applicatio
 
 ## Technologies Used
 
+- React-helmet-async 1.3
 - React 18.2
 - Express 4.18
 - TypeScript 4.9.2
@@ -14,10 +15,12 @@ This is a template for building a full-stack server side rendered web applicatio
 ## Features
 
 - Full-stack TypeScript application using React and Express.
+- Includes working server side SEO with `react-helmet-async`
 - Supports ES modules for server-side and client-side code.
 - Configured with Webpack and Babel for production builds.
 - Includes Jest for unit testing.
 - Includes example components and routes for getting started.
+- Includes HoosatUI as optional dependancy as git submodule.
 
 
 ## Getting started
