@@ -42,3 +42,12 @@ export interface HelmetContext {
     };
   }
 }
+
+export interface HeadTags {
+  title?: any;
+  style?: any;
+  meta?: any;
+  link?: string;
+  script?: any;
+  base?: any;
+}

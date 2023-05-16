@@ -12,7 +12,7 @@ import { APIRoutes } from './api-routes';
 import { ErrorHandler } from './core/express-errors';
 import { HelmetProvider } from 'react-helmet-async';
 import { Transform } from 'stream';
-import { HelmetContext } from '../@types/helmet';
+import { HelmetContext, HeadTags } from '../@types/seo';
 
 // Defining the port number
 let PORT = process.env.PORT || 8080;
@@ -44,22 +44,31 @@ APIRoutes(app);
 // Serving static files from public folder
 app.use(express.static("./public"));
 
-const replaceHeadTags = (headTags: { title?: any; style?: any; meta?: any; link?: string; script?: any; base?: any; }) => {
+
+
+const replaceHeadTags = (headTags: HeadTags) => {
   let replaced = false;
   return new Transform({
     transform(chunk, _encoding, callback) {
-      if (!replaced) {
-        let chunkStr = chunk.toString();
-        const headOpenTagMatch = chunkStr.match(/<head[^>]*>/i);
-        const headCloseTagMatch = chunkStr.match(/<\/head>/i);
-        if (headOpenTagMatch && headCloseTagMatch) {
-          const headContent = chunkStr.substring(headOpenTagMatch.index + headOpenTagMatch[0].length, headCloseTagMatch.index);
-          const newHeadContent = headContent + headTags.title + headTags.style + headTags.meta + headTags.script + headTags.base;
-          chunkStr = chunkStr.substring(0, headOpenTagMatch.index + headOpenTagMatch[0].length) + newHeadContent + chunkStr.substring(headCloseTagMatch.index);
-          chunk = Buffer.from(chunkStr);
-          replaced = true;
-        }
+      if (replaced) {
+        callback(null, chunk);
+        return;
       }
+      const chunkStr = chunk.toString();
+      const headOpenTagMatch = chunkStr.match(/<head[^>]*>/i);
+      const headCloseTagMatch = chunkStr.match(/<\/head>/i);
+      if (!headOpenTagMatch || !headCloseTagMatch) {
+        callback(null, chunk);
+        return;
+      }
+      const headContent = chunkStr.substring(
+        headOpenTagMatch.index + headOpenTagMatch[0].length,
+        headCloseTagMatch.index
+      );
+      const newHeadContent = `${headContent}${headTags.title ?? ''}${headTags.style ?? ''}${headTags.meta ?? ''}${headTags.script ?? ''}${headTags.base ?? ''}`;
+      const newChunkStr = `${chunkStr.substring(0, headOpenTagMatch.index + headOpenTagMatch[0].length)}${newHeadContent}${chunkStr.substring(headCloseTagMatch.index)}`;
+      chunk = Buffer.from(newChunkStr);
+      replaced = true;
       callback(null, chunk);
     }
   });
