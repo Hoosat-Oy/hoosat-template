@@ -1,17 +1,10 @@
-/**
- * This example API route for pinging if the API server is live.
- */
-import express, { Request, Response } from "express";
-import { ErrorHandler } from "../core/express-errors";
+import { createRouter } from "../core/server";
 
-const ping = express.Router();
+const pingRouter = createRouter();
 
-ping.get("/ping", (req: Request, res: Response) => {
-  try {
-    return res.status(200).json({ message: "pong" });
-  } catch (error) {
-    return ErrorHandler(req, res, error);
-  }
-})
+pingRouter.Get("/api/ping", (_req, res) => {
+  res.writeHead(200, { 'Content-Type': 'text/plain' });
+  res.end('pong!');
+});
 
-export { ping }
+export { pingRouter }

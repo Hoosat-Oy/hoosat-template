@@ -32,19 +32,6 @@ export default {
   // Specify the module loaders and rules
   module: {
     rules: [
-      {
-        test: /.(js|jsx)$/,
-        exclude: /node_modules/,
-        use: {
-          loader: "babel-loader",
-          options: {
-            presets: [
-              '@babel/preset-env',
-              '@babel/preset-react',
-            ]
-          },
-        },
-      },
       // Use the "ts-loader" to transpile TypeScript files
       {
         test: /.(ts|tsx)$/,
