@@ -80,7 +80,7 @@ router.Get("*", (req, res) => {
 const server = createServer(router);
 
 // Start listening on port 3000
-const port = 3000;
+const port = parseInt(process.env.PORT || "8080");
 listen(server, port, () => {
   console.log(`Server is running on port ${port}`);
 });
