@@ -1,6 +1,6 @@
 # Hoosat React + Express + Typescript Template
 
-This is a template for building a full-stack server side rendered web application using React, Express, and TypeScript. It includes support for ES modules using Webpack and Babel, and unit testing with Jest.
+This is a template for building a full-stack server side rendered web application using React andTypeScript. It includes support for ES modules using Webpack and unit testing with Jest.
 
 ## Technologies Used
 
