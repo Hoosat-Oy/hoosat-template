@@ -1,5 +1,5 @@
 import { Transform } from "stream";
-import { HeadTags } from "../../@types/hoosat-template";
+import { HeadTags } from "../../@types";
 
 /**
  * Creates a Transform stream that replaces the head tags of an HTML document.

@@ -13,7 +13,7 @@ import { HelmetProvider } from 'react-helmet-async';
 import { replaceHeadTags } from './core/seo';
 import { ErrorHandler } from './core/errors';
 import { cors } from './core/cors';
-import { HelmetContext } from '../@types/hoosat-template';
+import { HelmetContext } from '../@types';
 import { createRouter, createServer, listen } from './core/server';
 import { pingRouter } from './api-routes/ping';
 import { assets } from './core/assets';
@@ -61,13 +61,11 @@ router.Get("*", (req, res) => {
           script: helmetContext.helmet?.script?.toString() || '',
           base: helmetContext.helmet?.script?.toString() || '',
         });
-        pipe(replaceStream).pipe(res);
+        pipe(replaceStream).pipe(res.serverResponse);
       },
       onShellError(error) {
         console.log(error);
-        res.statusCode = 500;
-        res.setHeader('content-type', 'text/html');
-        res.end('<h1>Something went wrong</h1>');
+        res.status(500).send("onShellError");
         ErrorHandler(error);
       },
       onError(error) {

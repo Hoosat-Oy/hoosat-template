@@ -1,39 +1,37 @@
 
 import fs from 'fs';
 import path from "path";
-import { IncomingMessage, ServerResponse } from "http";
-import { RequestHandler } from "../../@types/hoosat-template";
+import { HoosatRequest, HoosatRequestHandler, HoosatResponse } from "../../@types";
 
 /**
  * Creates a middleware for serving static assets from a specified public directory.
  *
  * @param {string} publicPath - The path to the public directory where the assets are located.
- * @returns {RequestHandler} The assets middleware.
+ * @returns {HoosatRequestHandler} The assets middleware.
  */
-export const assets = (publicPath: string): RequestHandler => {
+export const assets = (publicPath: string): HoosatRequestHandler => {
   /**
    * A request handler function.
    *
    * @callback RequestHandler
-   * @param {IncomingMessage} req - The incoming request object.
-   * @param {ServerResponse} res - The server response object.
-   * @param {RequestHandler|undefined} next - The function to call to proceed to the next middleware or route handler.
+   * @param {HoosatRequest} req - The incoming request object.
+   * @param {HoosatResponse} res - The server response object.
+   * @param {HoosatRequestHandler|undefined} next - The function to call to proceed to the next middleware or route handler.
    * @returns {void}
    */
-  return (req: IncomingMessage, res: ServerResponse, next?: RequestHandler) => {
+  return (req: HoosatRequest, res: HoosatResponse, next?: HoosatRequestHandler) => {
     const filePath = path.join(publicPath, req.url || '');
     const fileStream = fs.createReadStream(filePath);
     fileStream.on('open', () => {
       res.setHeader('Content-Type', 'text/html'); 
-      fileStream.pipe(res);
+      fileStream.pipe(res.serverResponse);
     });
     fileStream.on('error', (err) => {
       if ((err as NodeJS.ErrnoException).code === 'ENOENT' || (err as NodeJS.ErrnoException).code === 'EISDIR') {
         next && next(req, res);
       } else {
         console.error(err);
-        res.writeHead(500, { 'Content-Type': 'text/plain' });
-        res.end('Internal Server Error');
+        res.status(500).send("Internal Server Error");
       }
     });
   };
