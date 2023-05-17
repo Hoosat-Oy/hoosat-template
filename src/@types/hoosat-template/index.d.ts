@@ -16,7 +16,16 @@ type Router = {
   Middleware: (handler: RequestHandler) => void;
 };
 
-export { Server, RequestHandler, Route, Router };
+interface ServerOptions {
+  protocol?: string,
+  https?: {
+    key?: string,
+    cert?: string,
+    ca?: string,
+  }
+}
+
+export { Server, ServerOptions, RequestHandler, Route, Router };
 
 export interface HelmetContext {
   helmet?: {

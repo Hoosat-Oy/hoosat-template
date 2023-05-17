@@ -11,11 +11,12 @@ import { StaticRouter } from 'react-router-dom/server';
 import { HelmetProvider } from 'react-helmet-async';
 // import { Transform } from 'stream';
 import { replaceHeadTags } from './core/seo';
-import { createRouter, createServer, listen, assets } from './core/server';
 import { ErrorHandler } from './core/errors';
 import { cors } from './core/cors';
 import { HelmetContext } from '../@types/hoosat-template';
+import { createRouter, createServer, listen } from './core/server';
 import { pingRouter } from './api-routes/ping';
+import { assets } from './core/assets';
 
 // Create a router
 const router = createRouter();
@@ -49,37 +50,37 @@ router.Get("*", (req, res) => {
         </html>
       </HelmetProvider>
     </React.StrictMode>,
-  {
-    bootstrapScripts: ['/bundle.js'],
-    onShellReady: async () => {
-      const replaceStream = replaceHeadTags({
-        title: helmetContext.helmet?.title?.toString() || '',
-        style: helmetContext.helmet?.script?.toString() || '',
-        meta: helmetContext.helmet?.meta?.toString() || '',
-        link: helmetContext.helmet?.link?.toString() || '',
-        script: helmetContext.helmet?.script?.toString() || '',
-        base: helmetContext.helmet?.script?.toString() || '',
-      });
-      pipe(replaceStream).pipe(res);
-    },
-    onShellError(error) {
-      console.log(error);
-      res.statusCode = 500;
-      res.setHeader('content-type', 'text/html');
-      res.end('<h1>Something went wrong</h1>');
-      ErrorHandler(error);
-    },
-    onError(error) {
-      console.error(error);
-      ErrorHandler(error);
-    }
-  });
+    {
+      bootstrapScripts: ['/bundle.js'],
+      onShellReady: async () => {
+        const replaceStream = replaceHeadTags({
+          title: helmetContext.helmet?.title?.toString() || '',
+          style: helmetContext.helmet?.script?.toString() || '',
+          meta: helmetContext.helmet?.meta?.toString() || '',
+          link: helmetContext.helmet?.link?.toString() || '',
+          script: helmetContext.helmet?.script?.toString() || '',
+          base: helmetContext.helmet?.script?.toString() || '',
+        });
+        pipe(replaceStream).pipe(res);
+      },
+      onShellError(error) {
+        console.log(error);
+        res.statusCode = 500;
+        res.setHeader('content-type', 'text/html');
+        res.end('<h1>Something went wrong</h1>');
+        ErrorHandler(error);
+      },
+      onError(error) {
+        console.error(error);
+        ErrorHandler(error);
+      }
+    });
 });
 
 // Create the server
 const server = createServer(router);
 
-// Start listening on port 3000
+// Start listening on port 8080
 const port = parseInt(process.env.PORT || "8080");
 listen(server, port, () => {
   console.log(`Server is running on port ${port}`);

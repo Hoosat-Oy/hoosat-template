@@ -1,10 +1,24 @@
 import { Transform } from "stream";
 import { HeadTags } from "../../@types/hoosat-template";
 
-export const replaceHeadTags = (headTags: HeadTags) => {
+/**
+ * Creates a Transform stream that replaces the head tags of an HTML document.
+ *
+ * @param {HeadTags} headTags - The head tags to replace in the HTML document.
+ * @returns {Transform} The Transform stream.
+ */
+export const replaceHeadTags = (headTags: HeadTags): Transform => {
   let replaced = false;
   return new Transform({
-    transform(chunk, _encoding, callback) {
+    /**
+     * Transforms the chunk of data.
+     *
+     * @param {any} chunk - The chunk of data to transform.
+     * @param {BufferEncoding} _encoding - The encoding of the chunk (not used in this implementation).
+     * @param {(error?: Error | null | undefined, data?: any)} callback - The callback function to invoke after transformation.
+     * @returns {void}
+     */
+    transform(chunk: any, _encoding: BufferEncoding, callback: (error?: Error | null | undefined, data?: any) => void): void {
       if (replaced) {
         callback(null, chunk);
         return;
