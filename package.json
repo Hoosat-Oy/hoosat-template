@@ -2,8 +2,17 @@
   "type": "module",
   "name": "hoosat-template",
   "version": "1.0.0",
-  "description": "",
+  "description": "Hoosat Template is React & Typescript SSR project template, for quickly building custom React projects.",
+  "author": "Toni Lukkaroinen @ Hoosat Oy",
+  "license": "ISC",
   "main": "index.js",
+  "bugs": {
+    "url": "https://github.com/Hoosat-Oy/hoosat-template/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Hoosat-Oy/hoosat-template"
+  },
   "scripts": {
     "test": "jest",
     "dev:build:client": "webpack --config webpack.client.config.js --mode=development --watch",
@@ -15,8 +24,6 @@
     "build": "npm run build:client && npm run build:server",
     "start": "node --experimental-modules dist/server.js"
   },
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
