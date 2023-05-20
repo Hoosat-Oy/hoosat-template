@@ -26,11 +26,10 @@ export const createRouter = (): HoosatRouter => {
   const routes: HoosatRoute[] = [];
   /**
    * Defines a new route with the specified method, path, and handler.
-   *
    * @param {string} method - The HTTP method for the route.
    * @param {string} path - The path pattern for the route.
    * @param {HoosatRequestHandler} handler - The request handler function for the route.
-   * @returns {void}
+   * @return {void}
    */
   const Route = (method: string, path: string, handler: HoosatRequestHandler): void => {
     routes.push({ path, handler, method });

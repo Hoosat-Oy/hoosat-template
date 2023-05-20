@@ -9,9 +9,9 @@ import { HoosatRequest, HoosatRequestHandler, HoosatResponse } from "../../@type
  */
 export const cors = (origin: string, methods: string): HoosatRequestHandler => {
   /**
-   * A request handler function.
+   * Handles the CORS middleware.
    *
-   * @callback RequestHandler
+   * @callback HoosatRequestHandler
    * @param {HoosatRequest} req - The incoming request object.
    * @param {HoosatResponse} res - The server response object.
    * @param {HoosatRequestHandler|undefined} next - The function to call to proceed to the next middleware or route handler.

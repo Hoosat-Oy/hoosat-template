@@ -38,6 +38,7 @@ router.Get("*", (req, res) => {
       <HelmetProvider context={helmetContext}>
         <html>
           <head>
+            <link rel="manifest" href="/manifest.json" />
           </head>
           <body>
             {/* Mounting the App component inside the StaticRouter */}

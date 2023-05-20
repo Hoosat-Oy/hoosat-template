@@ -46,8 +46,12 @@
     "noUnusedParameters": true,
     // Enable @types in src folder.
   },
+  "typedocOptions": {
+    "entryPoints": ["./src"],
+    "entryPointStrategy": "expand",
+    "out": "public/docs"
+  },
   // Specify the files and directories to include in compilation
-  "include": [
-    "src/**/*"
-  ]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
 }
