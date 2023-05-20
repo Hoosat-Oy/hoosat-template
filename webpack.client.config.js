@@ -16,7 +16,7 @@ export default {
   // Specify the output file name and path
   output: {
     filename: "bundle.js",
-    path: _resolve(new URL(".", import.meta.url).pathname, "public"),
+    path: _resolve(new URL(".", import.meta.url).pathname, "build/public"),
     // Set the output format to "module"
     module: true,
     // Set the chunk format to "module"

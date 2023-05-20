@@ -1,4 +1,3 @@
-
 import fs from 'fs';
 import path from "path";
 import { HoosatRequest, HoosatRequestHandler, HoosatResponse } from "../../@types";
@@ -7,17 +6,16 @@ import { HoosatRequest, HoosatRequestHandler, HoosatResponse } from "../../@type
  * Creates a middleware for serving static assets from a specified public directory.
  *
  * @param {string} publicPath - The path to the public directory where the assets are located.
- * @returns {HoosatRequestHandler} The assets middleware.
+ * @returns {HoosatRequestHandler} The CORS middleware.
  */
 export const assets = (publicPath: string): HoosatRequestHandler => {
   /**
    * A request handler function.
    *
-   * @callback RequestHandler
    * @param {HoosatRequest} req - The incoming request object.
    * @param {HoosatResponse} res - The server response object.
-   * @param {HoosatRequestHandler|undefined} next - The function to call to proceed to the next middleware or route handler.
-   * @returns {void}
+   * @param {HoosatRequestHandler} next - The function to call to proceed to the next middleware or route handler.
+   * @returns void
    */
   return (req: HoosatRequest, res: HoosatResponse, next?: HoosatRequestHandler) => {
     const filePath = path.join(publicPath, req.url || '');

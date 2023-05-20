@@ -15,14 +15,15 @@
   },
   "scripts": {
     "test": "jest",
-    "dev:build:client": "webpack --config webpack.client.config.js --mode=development --watch",
+    "move:assets": "cp -R public/. build/public",
+    "dev:build:client": "npm run move:assets && webpack --config webpack.client.config.js --mode=development --watch",
     "dev:build:server": "webpack --config webpack.server.config.js --mode=development --watch",
-    "dev:run": "nodemon --experimental-modules dist/server.js",
+    "dev:run": "nodemon --experimental-modules build/server.js",
     "dev": "concurrently \"npm run dev:build:client\" \"npm run dev:build:server\" \"npm run dev:run\"",
-    "build:client": "webpack --config webpack.client.config.js --mode=production --watch",
+    "build:client": "npm run move:assets && webpack --config webpack.client.config.js --mode=production --watch",
     "build:server": "webpack --config webpack.server.config.js --mode=production --watch",
     "build": "npm run build:client && npm run build:server",
-    "start": "node --experimental-modules dist/server.js"
+    "start": "node --experimental-modules build/server.js"
   },
   "dependencies": {
     "react": "^18.2.0",
