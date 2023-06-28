@@ -1,12 +1,21 @@
 import http, { IncomingMessage, OutgoingHttpHeaders, ServerResponse } from "http";
 import https from "https";
 
+interface UploadedFile {
+  name: string;
+  type: string;
+  data: Buffer;
+}
+
 interface HoosatRequest {
   incomingMessage: IncomingMessage;
   url: string;
   headers: http.IncomingHttpHeaders;
   params: {};
   body?: any;
+  files?: {
+    [fieldname: string]: UploadedFile;
+  };
 }
 
 interface HoosatResponse {
