@@ -44,6 +44,17 @@ export default {
         test: /.css$/i,
         use: ["style-loader", "css-loader"],
       },
+      {
+        test: /\.(node|png|jpg|gif)$/,
+        loader: 'file-loader',
+        options: {
+          name: '[name].[ext]',
+        },
+      },
+      {
+        test: /\.node$/,
+        loader: 'node-loader',
+      },
     ],
   },
   // Specify the file extensions to resolve
