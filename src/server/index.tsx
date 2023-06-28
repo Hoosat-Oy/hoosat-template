@@ -13,7 +13,7 @@ import { HelmetProvider } from 'react-helmet-async';
 import { replaceHeadTags } from './core/seo';
 import { ErrorHandler } from './core/errors';
 import { cors } from './core/cors';
-import { HelmetContext } from '../@types';
+import { HelmetContext } from './core/types';
 import { createRouter, createServer, listen } from './core/server';
 import { pingRouter } from './api-routes/ping';
 import { assets } from './core/assets';
