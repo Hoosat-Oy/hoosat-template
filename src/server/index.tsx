@@ -17,27 +17,15 @@ import { HelmetContext } from './core/types';
 import { createRouter, createServer, listen } from './core/server';
 import { assets } from './core/assets';
 import { upload } from './core/upload';
-import { APIRouter } from './api-routes';
-import mongoose from 'mongoose';
+import { pingRouter } from './api-routes/ping';
 
 // generate password.
-import Cryptology from './lib/common/Cryptology';
 import { generatePreloadTags } from './core/preload';
-
-const generatePassword = async () => {
-  console.log(await Cryptology.encrypt("hoosat-template-working??"))
-}
-generatePassword();
-
-mongoose.set('strictQuery', true);
-mongoose.connect(process.env.ATLAS_URI!, {
-  autoIndex: true,
-  ssl: true,
-});
-
 
 // Create a router
 const router = createRouter();
+
+router.UseRouter(pingRouter);
 
 // Define routes and middleware
 router.Middleware(cors(process.env.ORIGINS!, 'GET, POST, PUT, DELETE'));
@@ -48,9 +36,6 @@ router.Middleware(assets(process.env.PUBLIC!));
 // Handle multipart/form-data file uploading.
 router.Middleware(upload(process.env.PUBLIC!));
 
-// Use Router from another module.
-router.UseRouter(APIRouter);
-
 router.Post('/upload', (req, res) => {
   // Access the uploaded files through req.files
   console.log(req.files);
@@ -60,12 +45,7 @@ router.Post('/upload', (req, res) => {
 
 router.Get("*", (req, res) => {
   const helmetContext: HelmetContext = {};
-  let preloadTags: string[];
-  if(process.env.NODE_ENV === "development") {
-    preloadTags = generatePreloadTags('./build/public', '/');
-  } else {
-    preloadTags = generatePreloadTags('/home/marko/porinakkupaketti.fi/build/public', '/');
-  }
+  const preloadTags = generatePreloadTags('./build/public', '/');
 
   const replaceStream = replaceHeadTags({
     title: helmetContext.helmet?.title?.toString() || '',
