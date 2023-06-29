@@ -15,30 +15,78 @@ import { ErrorHandler } from './core/errors';
 import { cors } from './core/cors';
 import { HelmetContext } from './core/types';
 import { createRouter, createServer, listen } from './core/server';
-import { pingRouter } from './api-routes/ping';
 import { assets } from './core/assets';
+import { upload } from './core/upload';
+import { APIRouter } from './api-routes';
+import mongoose from 'mongoose';
+
+// generate password.
+import Cryptology from './lib/common/Cryptology';
+import { generatePreloadTags } from './core/preload';
+
+const generatePassword = async () => {
+  console.log(await Cryptology.encrypt("hoosat-template-working??"))
+}
+generatePassword();
+
+mongoose.set('strictQuery', true);
+mongoose.connect(process.env.ATLAS_URI!, {
+  autoIndex: true,
+  ssl: true,
+});
+
 
 // Create a router
 const router = createRouter();
 
 // Define routes and middleware
-router.Middleware(cors('http://localhost:3000/', 'GET, POST, PUT, DELETE'));
+router.Middleware(cors(process.env.ORIGINS!, 'GET, POST, PUT, DELETE'));
 
-// Serve static files from the "public" directory
-router.Middleware(assets("./public"));
+// Serve static files from the "public" directory.
+router.Middleware(assets(process.env.PUBLIC!));
+
+// Handle multipart/form-data file uploading.
+router.Middleware(upload(process.env.PUBLIC!));
 
 // Use Router from another module.
-router.UseRouter(pingRouter);
+router.UseRouter(APIRouter);
 
+router.Post('/upload', (req, res) => {
+  // Access the uploaded files through req.files
+  console.log(req.files);
+  // Since the file upload was handled globally by middleware send a response.
+  res.status(200).json({ result: "success", files: req.files });
+});
 
 router.Get("*", (req, res) => {
   const helmetContext: HelmetContext = {};
+  let preloadTags: string[];
+  if(process.env.NODE_ENV === "development") {
+    preloadTags = generatePreloadTags('./build/public', '/');
+  } else {
+    preloadTags = generatePreloadTags('/home/marko/porinakkupaketti.fi/build/public', '/');
+  }
+
+  const replaceStream = replaceHeadTags({
+    title: helmetContext.helmet?.title?.toString() || '',
+    meta: helmetContext.helmet?.meta?.toString() || '',
+    link: preloadTags.join("\n") + (helmetContext.helmet?.link?.toString() || ''),
+    script: helmetContext.helmet?.script?.toString() || '',
+    base: helmetContext.helmet?.base?.toString() || '',
+    style: helmetContext.helmet?.style?.toString() || '',
+  });
+
   // Rendering the App component to a pipeable stream
   const { pipe } = renderToPipeableStream(
     <React.StrictMode>
       <HelmetProvider context={helmetContext}>
-        <html>
-          <head>
+        <html lang="FI-fi">
+          <head >
+            <meta charSet="utf-8" />
+            <title>Porin Akkupaketti</title>
+            <meta name="description" content="Author: Hoosat Oy, Illustrator: Toni Lukkaroinen, Description: Porin Akkupaketti, teemme pienakkujen huoltamista ja kierrätämme niitä." />
+            <link rel="icon" href="/logo/favicon.ico" />
+            <meta name="viewport" content="width=device-width, initial-scale=1" />
             <link rel="manifest" href="/manifest.json" />
           </head>
           <body>
@@ -55,25 +103,21 @@ router.Get("*", (req, res) => {
     {
       bootstrapScripts: ['/bundle.js'],
       onShellReady: async () => {
-        const replaceStream = replaceHeadTags({
-          title: helmetContext.helmet?.title?.toString() || '',
-          style: helmetContext.helmet?.script?.toString() || '',
-          meta: helmetContext.helmet?.meta?.toString() || '',
-          link: helmetContext.helmet?.link?.toString() || '',
-          script: helmetContext.helmet?.script?.toString() || '',
-          base: helmetContext.helmet?.script?.toString() || '',
-        });
         pipe(replaceStream).pipe(res.serverResponse);
       },
       onShellError(error) {
+        console.log(error);
         res.status(500).send("onShellError");
         ErrorHandler(error);
       },
-      onError: (error) => {
+      onError(error) {
+        console.error(error);
         ErrorHandler(error);
       }
-    });
+    }
+  );
 });
+
 
 // Create the server
 const server = createServer(router);
