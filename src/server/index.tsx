@@ -1,15 +1,8 @@
-// Importing necessary modules and components
-// import express, { Request, Response } from "express";
-//import cors  from "cors";
 import React from 'react';
 import App from '../client/App';
 import { renderToPipeableStream } from 'react-dom/server';
-// import App from '../client/App';
 import { StaticRouter } from 'react-router-dom/server';
-// import { APIRoutes } from './api-routes';
-// import { ErrorHandler } from './core/express-errors';
 import { HelmetProvider } from 'react-helmet-async';
-// import { Transform } from 'stream';
 import { replaceHeadTags } from './core/seo';
 import { ErrorHandler } from './core/errors';
 import { cors } from './core/cors';
@@ -18,8 +11,6 @@ import { createRouter, createServer, listen } from './core/server';
 import { assets } from './core/assets';
 import { upload } from './core/upload';
 import { pingRouter } from './api-routes/ping';
-
-// generate password.
 import { generatePreloadTags } from './core/preload';
 
 // Create a router
