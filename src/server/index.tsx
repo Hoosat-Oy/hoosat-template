@@ -74,7 +74,7 @@ router.Get("*", (req, res) => {
     {
       bootstrapScripts: ['/bundle.js'],
       onShellReady: async () => {
-        pipe(replaceStream).pipe(res.serverResponse);
+        pipe(replaceStream).pipe(res);
       },
       onShellError(error) {
         console.log(error);

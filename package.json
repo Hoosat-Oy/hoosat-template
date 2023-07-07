@@ -26,18 +26,22 @@
     "start": "node --experimental-modules build/server.js"
   },
   "dependencies": {
+    "formidable": "^3.5.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-helmet-async": "^1.3.0",
     "react-router": "^6.11.2",
     "react-router-dom": "^6.11.2",
-    "save-dev": "^0.0.1-security"
+    "save-dev": "^0.0.1-security",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
+    "@types/formidable": "^3.4.0",
     "@types/jest": "^29.5.1",
     "@types/node": "^16.11.10",
     "@types/react": "^18.2.6",
     "@types/react-dom": "^18.2.4",
+    "@types/uuid": "^9.0.2",
     "@types/webpack": "^5.28.1",
     "concurrently": "^8.0.1",
     "css-loader": "^6.7.3",
