@@ -19,13 +19,13 @@ const router = createRouter();
 router.UseRouter(pingRouter);
 
 // Define routes and middleware
-router.Middleware(cors(process.env.ORIGINS!, 'GET, POST, PUT, DELETE'));
+router.Middleware(cors(process.env.ORIGINS || "localhost:8080", 'GET, POST, PUT, DELETE'));
 
 // Serve static files from the "public" directory.
-router.Middleware(assets(process.env.PUBLIC!));
+router.Middleware(assets(process.env.PUBLIC! || "./build/public"));
 
 // Handle multipart/form-data file uploading.
-router.Middleware(upload(process.env.PUBLIC!));
+router.Middleware(upload(process.env.PUBLIC! || "./build/public/uploads"));
 
 router.Post('/upload', (req, res) => {
   // Access the uploaded files through req.files
