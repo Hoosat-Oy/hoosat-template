@@ -16,13 +16,13 @@
   "scripts": {
     "test": "jest",
     "move:assets": "cp -R public/. build/public",
-    "dev:build:client": "npm run move:assets && webpack --config webpack.client.config.js --mode=development --watch",
+    "dev:build:client": "webpack --config webpack.client.config.js --mode=development --watch",
     "dev:build:server": "webpack --config webpack.server.config.js --mode=development --watch",
     "dev:run": "nodemon --experimental-modules build/server.js",
-    "dev": "concurrently \"npm run dev:build:client\" \"npm run dev:build:server\" \"npm run dev:run\"",
-    "build:client": "npm run move:assets && webpack --config webpack.client.config.js --mode=production",
+    "dev": "npm run move:assets && concurrently \"npm run dev:build:client\" \"npm run dev:build:server\" \"npm run dev:run\"",
+    "build:client": "webpack --config webpack.client.config.js --mode=production",
     "build:server": "webpack --config webpack.server.config.js --mode=production",
-    "build": "npm run build:client && npm run build:server",
+    "build": "npm run move:assets && npm run build:client && npm run build:server",
     "start": "node --experimental-modules build/server.js"
   },
   "dependencies": {
