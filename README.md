@@ -1,12 +1,10 @@
-# Hoosat Create
-
 Hoosat Create is a full-stack server-side rendered (SSR) TypeScript React stack designed to provide a seamless development experience with a clear separation between the client and server. Developed by Hoosat Oy, this stack offers a robust set of features to accelerate web application development.
 
 ## Features
 
 - **Full-Stack TypeScript Application:** Hoosat Create leverages the power of TypeScript throughout the entire application stack, from the frontend to the backend, ensuring type safety and improved developer productivity.
 - **Server-Side SEO with react-helmet-async:** The stack includes server-side SEO capabilities using react-helmet-async, allowing you to manage and control the document head and meta tags for search engine optimization.
-- **ES Modules Support:** Hoosat Create supports ECMAScript modules (ES modules) for both server-side and client-side code, enabling better code organization and modularity.
+- **ES Modules Only:** Hoosat Create supports ECMAScript modules (ES modules) for both server-side and client-side code, enabling better code organization and modularity.
 - **Configured with Webpack:** The stack is pre-configured with Webpack for production builds, enabling efficient bundling, minification, and optimization of the code.
 - **Jest for Unit Testing:** Hoosat Create comes with Jest, a popular JavaScript testing framework, to facilitate unit testing for your application components.
 - **Example Components and Routes:** The stack includes pre-built example components and routes, providing a starting point for building your application.
