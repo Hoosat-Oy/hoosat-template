@@ -1,3 +1,6 @@
 [submodule "src/server/core"]
 	path = src/server/core
 	url = https://github.com/Hoosat-Oy/hoosat-server-core.git
+[submodule "src/client/HoosatUI"]
+	path = src/client/HoosatUI
+	url = https://github.com/hoosat-oy/HoosatUI
