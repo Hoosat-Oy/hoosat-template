@@ -4,10 +4,17 @@ import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 
-// Get the root DOM node to hydrate the app into
+/**
+ * Represents the root DOM node where the React app will be hydrated.
+ */
 const domNode = document.getElementById('root');
 
-// If the root DOM node cannot be found, log an error message to the console
+/**
+ * Hydrates the React app into the root DOM node using the React DOM client API.
+ * If the root DOM node cannot be found, log an error message to the console.
+ * @param domNode - The root DOM node.
+ * @returns {void}
+ */
 if (domNode === null) {
   console.log("Could not find element with root id.");
 } else {

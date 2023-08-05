@@ -19,15 +19,34 @@ const router = createRouter();
 
 router.UseRouter(pingRouter);
 
-// Define routes and middleware
+/**
+ * Middleware to handle CORS for allowed origins and HTTP methods.
+ * @function
+ * @param {string} origins - The allowed origins, separated by commas.
+ * @param {string} methods - The allowed HTTP methods, separated by commas.
+ */
 router.Middleware(cors(process.env.ORIGINS || "localhost:8080", 'GET, POST, PUT, DELETE'));
 
-// Serve static files from the "public" directory.
+/**
+ * Middleware to serve static files from the "public" directory.
+ * @function
+ * @param {string} publicDir - The path to the "public" directory.
+ */
 router.Middleware(assets(process.env.PUBLIC! || "./build/public"));
 
-// Handle multipart/form-data file uploading.
+/**
+ * Middleware to handle multipart/form-data file uploading.
+ * @function
+ * @param {string} publicDir - The path to the "public" directory for uploads.
+ */
 router.Middleware(upload(process.env.PUBLIC! || "./build/public/uploads"));
 
+/**
+ * POST route to handle file uploads.
+ * @function
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ */
 router.Post('/upload', (req, res) => {
   // Access the uploaded files through req.files
   console.log(req.files);
@@ -35,8 +54,18 @@ router.Post('/upload', (req, res) => {
   res.status(200).json({ result: "success", files: req.files });
 });
 
+/**
+ * GET route to handle all other requests.
+ * @function
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ */
 router.Get("*", async (req, res) => {
   const helmetContext = {};
+  /**
+   * Represents the JSX element for the server-side rendering.
+   * @type {JSX.Element}
+   */
   const jsx = 
     <React.StrictMode>
       <I18nextProvider i18n={i18n}>
