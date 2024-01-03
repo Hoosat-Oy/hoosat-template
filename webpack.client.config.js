@@ -1,52 +1,63 @@
 // webpack.client.config.js
-
-// Import the "resolve" method from the "path" module
+import webpack from 'webpack';
 import { resolve as _resolve } from "path";
+import TerserPlugin from 'terser-webpack-plugin'
+import CompressionPlugin from 'compression-webpack-plugin'
 
-// Export the configuration object
 export default {
-  // Set the source map type to "source-map" for easier debugging
   devtool: "source-map",
-  // Set the build mode to "development"
   mode: "development",
-  // Specify the target environment as "web" to bundle for web browsers
   target: "web",
-  // Specify the entry point for the client application
-  entry: "./src/client/index.tsx",
-  // Specify the output file name and path
+  entry: './src/client/index.tsx',  
   output: {
-    filename: "bundle.js",
+    filename: "bundle.[contenthash].js",
     path: _resolve("./build/public"),
-    // Set the output format to "module"
-    module: true,
-    // Set the chunk format to "module"
-    chunkFormat: "module",
-    // Set the library target to "module"
-    library: { type: "module" },
-    libraryTarget: "module",
   },
-  // Enable the "outputModule" experiment
   experiments: {
     outputModule: true,
   },
-  // Specify the module loaders and rules
   module: {
     rules: [
-      // Use the "ts-loader" to transpile TypeScript files
+      {
+        test: /.css$/i,
+        use: ["style-loader", "css-loader"],
+      },
       {
         test: /.(ts|tsx)$/,
         exclude: /node_modules/,
         use: ["ts-loader"],
       },
-      // Use the "style-loader" and "css-loader" to load CSS files
-      {
-        test: /.css$/i,
-        use: ["style-loader", "css-loader"],
-      },
     ],
   },
-  // Specify the file extensions to resolve
   resolve: {
     extensions: [".tsx", ".ts", ".js", ".jsx"],
   },
+  optimization: {
+    minimizer: [new TerserPlugin()],
+    runtimeChunk: 'single', 
+    splitChunks: {
+      chunks: 'all',
+      minSize: 30000,
+      maxSize: 300000,
+      minChunks: 1,
+      maxAsyncRequests: 15,
+      maxInitialRequests: 3,
+      automaticNameDelimiter: '~',
+      cacheGroups: {
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendors',
+          chunks: 'all',
+        },
+        default: {
+          minChunks: 2,
+          priority: -20,
+          reuseExistingChunk: true,
+        },
+      },
+    },
+  },
+  plugins: [
+    new CompressionPlugin(),
+  ]
 };
