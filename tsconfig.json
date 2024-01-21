@@ -2,7 +2,7 @@
   // Specify the compiler options
   "compilerOptions": {
     // Set the output directory to "dist"
-    "outDir": "./build",
+    "outDir": "./build-ts",
     // Set the module system to "esnext"
     "module": "ESNext",
     // Set the ECMAScript target version to "ES2020"

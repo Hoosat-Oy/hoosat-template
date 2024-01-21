@@ -1,4 +1,4 @@
-import { createRouter } from "../core/server";
+import { createRouter } from "../../core/server";
 
 /**
  * The Ping API router instance used for defining routes and handling requests.

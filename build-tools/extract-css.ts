@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+
 /**
  * Extracts CSS content from all CSS files within a given directory and its subdirectories.
  *
@@ -7,32 +8,43 @@ import path from 'path';
  * @returns {string} The combined CSS content from all CSS files found in the directory and its subdirectories.
  */
 export const extractCssFrom = (directoryPath: string): string => {
-  let combinedCSS = '';/**
-  * Traverses a directory and its subdirectories to find and extract CSS content from CSS files.
-  *
-  * @param {string} currentPath - The current path being traversed.
-  * @returns {void}
-  */
+  const cssContentArray: string[] = [];
+  /**
+   * Traverses a directory and its subdirectories to find and extract CSS content from CSS files.
+   *
+   * @param {string} currentPath - The current path being traversed.
+   * @returns {void}
+   */
   const traverseDirectory = (currentPath: string): void => {
-    if(currentPath === undefined) {
+    if (currentPath === undefined) {
       return;
     }
-    const directoryContents = fs.readdirSync(currentPath);
+    const directoryContents = fs.readdirSync(currentPath).sort((a, b) => {
+      const aContainsHoosatUI = a.includes("HoosatUI");
+      const bContainsHoosatUI = b.includes("HoosatUI");
+      if (aContainsHoosatUI && !bContainsHoosatUI) {
+        return -1;
+      } else if (!aContainsHoosatUI && bContainsHoosatUI) {
+        return 1;
+      } else {
+        return a.localeCompare(b);
+      }
+    });
     for (const item of directoryContents) {
       const itemPath = path.join(currentPath, item);
       const itemStat = fs.statSync(itemPath);
       if (itemStat.isDirectory()) {
-        traverseDirectory(itemPath); // Recursively traverse subdirectories
+        traverseDirectory(itemPath);
       } else if (itemStat.isFile() && path.extname(item) === '.css') {
         const cssContent = fs.readFileSync(itemPath, 'utf-8');
         const cleanedContent = cssContent.replace(/@import[^;]+;/g, '');
-        combinedCSS += cleanedContent; // Append CSS content to the combinedCSS string
+        cssContentArray.push(cleanedContent);
       }
     }
-  }
+  };
   traverseDirectory(directoryPath);
-  return combinedCSS;
-}
+  return cssContentArray.join('\n');
+};
 
 /**
  * Minifies CSS content.
